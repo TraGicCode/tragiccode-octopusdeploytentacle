@@ -42,7 +42,11 @@
 #
 # Copyright 2017 Your name here, unless otherwise noted.
 #
-class octopusdeploytentacle {
+class octopusdeploytentacle(
+  Enum['Listen', 'Poll']$communication_mode = $octopusdeploytentacle::params::communication_mode,
+  ) inherits octopusdeploytentacle::params {
 
-
+  class { 'octopusdeploytentacle::install':
+    communication_mode => $communication_mode,
+  }
 }
