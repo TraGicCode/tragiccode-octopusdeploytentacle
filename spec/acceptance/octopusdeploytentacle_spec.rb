@@ -35,6 +35,10 @@ describe 'octopusdeployserver' do
       its(:stdout) { should match /Tentacle/ }
     end
 
+    describe command("Get-Content -Path \"C:/Octopus/Tentacle/Tentacle.config\"") do
+       its(:stdout) { should match /C:\\Octopus/ }
+    end
+
   end
 
   # context 'when uninstalling with provided mandatory parameters' do

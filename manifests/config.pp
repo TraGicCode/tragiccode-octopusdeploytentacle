@@ -10,9 +10,16 @@ class octopusdeploytentacle::config(
   $tentacle_home_directory = 'C:\\Octopus'
   $tentacle_config_directory = "${tentacle_home_directory}\\Tentacle\\Tentacle.config"
   # # With Find 1 means mastch not found and 0 means match found
-  exec { 'create-octopusserver-instance':
+  exec { 'create-octopustentacle-instance':
     command   => "C:\\Windows\\System32\\cmd.exe /c \"\"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe\" create-instance --instance Tentacle --config \"${tentacle_config_directory}\" --console\"",
-    unless    => "C:\\Windows\\System32\\cmd.exe /c \"\"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe\" list-instances --console | C:\\Windows\\System32\\findstr.exe \"Tentacle\"\"",
+    # unless  => "C:\\Windows\\System32\\cmd.exe /c \"\"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe\" list-instances --console | C:\\Windows\\System32\\findstr.exe \"Tentacle\"\"",
+    creates   => $tentacle_config_directory,
+    logoutput => true,
+  }
+  ->
+  exec { 'create-octopustentacle-home':
+    command   => "C:\\Windows\\System32\\cmd.exe /c \"\"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe\" configure --instance Tentacle --home \"${tentacle_home_directory}\" --console\"",
+    unless    => "C:\\Windows\\System32\\cmd.exe /c \"C:\\Windows\\System32\\findstr.exe \"${tentacle_home_directory}\" \"${tentacle_config_directory}\"\"",
     logoutput => true,
   }
 }
