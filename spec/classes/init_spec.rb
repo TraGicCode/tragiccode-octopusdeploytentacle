@@ -6,5 +6,6 @@ describe 'octopusdeploytentacle' do
     it { should contain_class('octopusdeploytentacle::install').with({
       :communication_mode => 'Listen',
       }) }
+    it { should contain_class('octopusdeploytentacle::config') }
   end
 end

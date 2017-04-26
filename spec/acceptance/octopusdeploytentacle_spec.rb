@@ -31,32 +31,36 @@ describe 'octopusdeployserver' do
        it { should exist }
     end
 
-  end
-
-  context 'when uninstalling with provided mandatory parameters' do
-    let(:uninstall_manifest) {
-      <<-MANIFEST
-          class { 'octopusdeploytentacle':
-            package_ensure => 'absent',
-          }
-        MANIFEST
-    }
-
-    it 'should run without errors' do
-      apply_manifest(uninstall_manifest, :catch_failures => true)
-    end
-
-    it 'should be idempotent' do
-      apply_manifest(uninstall_manifest, :catch_changes => true)
-    end
-
-    describe package('Octopus Deploy Tentacle') do
-      it { should_not be_installed }
-    end
-
-    describe file('C:\OctopusTentacle64.msi') do
-       it { should_not exist }
+    describe command("& 'C:/Program Files/Octopus Deploy/Tentacle/tentacle.exe' list-instances --console") do
+      its(:stdout) { should match /Tentacle/ }
     end
 
   end
+
+  # context 'when uninstalling with provided mandatory parameters' do
+  #   let(:uninstall_manifest) {
+  #     <<-MANIFEST
+  #         class { 'octopusdeploytentacle':
+  #           package_ensure => 'absent',
+  #         }
+  #       MANIFEST
+  #   }
+  #
+  #   it 'should run without errors' do
+  #     apply_manifest(uninstall_manifest, :catch_failures => true)
+  #   end
+  #
+  #   it 'should be idempotent' do
+  #     apply_manifest(uninstall_manifest, :catch_changes => true)
+  #   end
+  #
+  #   describe package('Octopus Deploy Tentacle') do
+  #     it { should_not be_installed }
+  #   end
+  #
+  #   describe file('C:\OctopusTentacle64.msi') do
+  #      it { should_not exist }
+  #   end
+  #
+  # end
 end

@@ -51,4 +51,11 @@ class octopusdeploytentacle(
     communication_mode => $communication_mode,
     package_ensure     => $package_ensure,
   }
+
+  class { 'octopusdeploytentacle::config':
+
+  }
+
+  Class['octopusdeploytentacle::install']
+  -> Class['octopusdeploytentacle::config']
 }
