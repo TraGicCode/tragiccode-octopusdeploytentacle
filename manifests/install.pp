@@ -9,8 +9,13 @@ class octopusdeploytentacle::install(
     'present'   => 'file',
     default     => 'absent',
   }
-  file { 'C:\\OctopusTentacle64.msi':
+  file { $octopusdeploytentacle::params::tentacle_download_absolute_path:
     ensure => $file_ensure,
     source => $octopusdeploytentacle::params::tentacle_download_url,
+  }
+
+  package { 'Octopus Deploy Tentacle':
+    ensure => $package_ensure,
+    source => $octopusdeploytentacle::params::tentacle_download_absolute_path,
   }
 }
