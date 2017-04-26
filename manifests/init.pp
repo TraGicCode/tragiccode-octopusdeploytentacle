@@ -43,10 +43,12 @@
 # Copyright 2017 Your name here, unless otherwise noted.
 #
 class octopusdeploytentacle(
+  Enum['present', 'installed', 'absent'] $package_ensure = $octopusdeploytentacle::params::package_ensure,
   Enum['Listen', 'Poll']$communication_mode = $octopusdeploytentacle::params::communication_mode,
   ) inherits octopusdeploytentacle::params {
 
   class { 'octopusdeploytentacle::install':
     communication_mode => $communication_mode,
+    package_ensure     => $package_ensure,
   }
 }
