@@ -8,6 +8,7 @@ class octopusdeploytentacle::config(
   # cmd /C ""C:\Program Files (x86)\WinRar\Rar.exe" a "D:\Hello 2\File.rar" "D:\Hello 2\*.*""
   $cli = '"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe"'
   $tentacle_home_directory = 'C:\\Octopus'
+  $tentacle_app_directory = 'C:\\Applications'
   $tentacle_config_directory = "${tentacle_home_directory}\\Tentacle\\Tentacle.config"
   # # With Find 1 means mastch not found and 0 means match found
   exec { 'create-octopustentacle-instance':
@@ -20,6 +21,12 @@ class octopusdeploytentacle::config(
   exec { 'create-octopustentacle-home':
     command   => "C:\\Windows\\System32\\cmd.exe /c \"\"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe\" configure --instance Tentacle --home \"${tentacle_home_directory}\" --console\"",
     unless    => "C:\\Windows\\System32\\cmd.exe /c \"C:\\Windows\\System32\\findstr.exe \"${tentacle_home_directory}\" \"${tentacle_config_directory}\"\"",
+    logoutput => true,
+  }
+  ->
+  exec { 'create-octopustentacle-app':
+    command   => "C:\\Windows\\System32\\cmd.exe /c \"\"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe\" configure --instance Tentacle --app \"${tentacle_app_directory}\" --console\"",
+    unless    => "C:\\Windows\\System32\\cmd.exe /c \"C:\\Windows\\System32\\findstr.exe \"${tentacle_app_directory}\" \"${tentacle_config_directory}\"\"",
     logoutput => true,
   }
 }

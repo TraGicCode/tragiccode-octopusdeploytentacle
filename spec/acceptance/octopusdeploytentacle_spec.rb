@@ -37,6 +37,7 @@ describe 'octopusdeployserver' do
 
     describe command("Get-Content -Path \"C:/Octopus/Tentacle/Tentacle.config\"") do
        its(:stdout) { should match /C:\\Octopus/ }
+       its(:stdout) { should match /C:\\Applications/ }
     end
 
   end
