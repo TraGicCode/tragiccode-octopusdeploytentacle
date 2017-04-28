@@ -47,6 +47,12 @@ MIIJhgIBAzCCCUYGCSqGSIb3DQEHAaCCCTcEggkzMIIJLzCCBggGCSqGSIb3DQEHAaCCBfkEggX1MIIF
        its(:stdout) { should match /C:\\Applications/ }
     end
 
+    describe service('OctopusDeploy Tentacle') do
+      it { should be_enabled }
+      it { should be_installed }
+      it { should be_running }
+    end
+
   end
 
   # context 'when uninstalling with provided mandatory parameters' do
