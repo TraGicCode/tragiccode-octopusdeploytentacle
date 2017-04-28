@@ -55,30 +55,37 @@ MIIJhgIBAzCCCUYGCSqGSIb3DQEHAaCCCTcEggkzMIIJLzCCBggGCSqGSIb3DQEHAaCCBfkEggX1MIIF
 
   end
 
-  # context 'when uninstalling with provided mandatory parameters' do
-  #   let(:uninstall_manifest) {
-  #     <<-MANIFEST
-  #         class { 'octopusdeploytentacle':
-  #           package_ensure => 'absent',
-  #         }
-  #       MANIFEST
-  #   }
-  #
-  #   it 'should run without errors' do
-  #     apply_manifest(uninstall_manifest, :catch_failures => true)
-  #   end
-  #
-  #   it 'should be idempotent' do
-  #     apply_manifest(uninstall_manifest, :catch_changes => true)
-  #   end
-  #
-  #   describe package('Octopus Deploy Tentacle') do
-  #     it { should_not be_installed }
-  #   end
-  #
-  #   describe file('C:\OctopusTentacle64.msi') do
-  #      it { should_not exist }
-  #   end
-  #
-  # end
+  context 'when uninstalling with provided mandatory parameters' do
+    let(:uninstall_manifest) {
+      <<-MANIFEST
+          class { 'octopusdeploytentacle':
+            package_ensure => 'absent',
+            server_thumbprint => '#{@server_thumbprint}',
+            instance_pregenerated_certificate => '#{@instance_pregenerated_certificate}',
+            instance_pregenerated_certificate_thumbprint => '#{@instance_pregenerated_certificate_thumbprint}',
+          }
+        MANIFEST
+    }
+
+    it 'should run without errors' do
+      apply_manifest(uninstall_manifest, :catch_failures => true)
+    end
+
+    it 'should be idempotent' do
+      apply_manifest(uninstall_manifest, :catch_changes => true)
+    end
+
+    describe package('Octopus Deploy Tentacle') do
+      it { should_not be_installed }
+    end
+
+    describe file('C:\OctopusTentacle64.msi') do
+       it { should_not exist }
+    end
+
+    describe service('OctopusDeploy Tentacle') do
+      it { should_not be_installed }
+    end
+
+  end
 end
