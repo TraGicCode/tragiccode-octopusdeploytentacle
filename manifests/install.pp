@@ -2,7 +2,6 @@
 #
 class octopusdeploytentacle::install(
   Enum['present', 'installed', 'absent'] $package_ensure = $octopusdeploytentacle::params::package_ensure,
-  Enum['Listen', 'Poll']$communication_mode = $octopusdeploytentacle::params::communication_mode,
   ) inherits octopusdeploytentacle::params {
   $file_ensure = $package_ensure ? {
     'installed' => 'file',
