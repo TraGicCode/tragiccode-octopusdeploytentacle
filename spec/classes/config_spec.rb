@@ -49,11 +49,22 @@ lAGQAIABDAHIAeQBwAHQAbwBnAHIAYQBwAGgAaQBjACAAUAByAG8AdgBpAGQAZQByACAAdgAxAC4AMDC
       :logoutput => 'true',
     }).that_requires('Exec[create-octopustentacle-communicationmode]') }
 
+    it { should contain_file('C:\\pre-generated-tentacle-certificate.txt').with({
+      :ensure   => 'file',
+      :content  => instance_pregenerated_certificate,
+    }).that_requires('Exec[create-octopustentacle-trust]') }
+
+    it { should contain_exec('import-octopustentacle-certificate').with({
+      :command   => 'C:\\Windows\\System32\\cmd.exe /c ""C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe" import-certificate --instance "Tentacle" -f C:\\pre-generated-tentacle-certificate.txt  --console"',
+      # :unless    => 'C:\\Windows\\System32\\cmd.exe /c "C:\\Windows\\System32\\findstr.exe "CCCD736C25938806692F6C55521FA0869F29F280" "C:\\Octopus\\Tentacle\\Tentacle.config""',
+      :logoutput => 'true',
+    }).that_requires('File[C:\\pre-generated-tentacle-certificate.txt]') }
+
     it { should contain_exec('install-and-start-tentacle-service').with({
       :command   => 'C:\\Windows\\System32\\cmd.exe /c ""C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe" service --instance "Tentacle" --install --start --console"',
       # :unless    => 'C:\\Windows\\System32\\cmd.exe /c "C:\\Windows\\System32\\findstr.exe "CCCD736C25938806692F6C55521FA0869F29F280" "C:\\Octopus\\Tentacle\\Tentacle.config""',
       :logoutput => 'true',
-    }).that_requires('Exec[create-octopustentacle-trust]') }
+    }).that_requires('Exec[import-octopustentacle-certificate]') }
   end
 
 end
