@@ -48,8 +48,7 @@ class octopusdeploytentacle::config(
   }
   -> exec { 'create-octopustentacle-trust':
     command   => "C:\\Windows\\System32\\cmd.exe /c \"\"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe\" configure --instance \"${instance_name}\" --trust \"${server_thumbprint}\" --console\"",
-    # path => '/usr/bin:/usr/sbin:/bin:/usr/local/bin',
-    # refreshonly => true,
+    unless    => "C:\\Windows\\System32\\cmd.exe /c \"C:\\Windows\\System32\\findstr.exe \"${server_thumbprint}\" \"${tentacle_config_directory}\"\"",
     logoutput => true,
   }
   -> file { 'C:\\pre-generated-tentacle-certificate.txt':

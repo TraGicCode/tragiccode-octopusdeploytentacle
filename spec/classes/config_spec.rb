@@ -24,6 +24,36 @@ lAGQAIABDAHIAeQBwAHQAbwBnAHIAYQBwAGgAaQBjACAAUAByAG8AdgBpAGQAZQByACAAdgAxAC4AMDC
       :unless    => 'C:\\Windows\\System32\\cmd.exe /c "C:\\Windows\\System32\\findstr.exe "C:\\Octopus" "C:\\Octopus\\Tentacle\\Tentacle.config""',
       :logoutput => 'true',
     }).that_requires('Exec[create-octopustentacle-instance]') }
+
+    it { should contain_exec('create-octopustentacle-app').with({
+      :command   => 'C:\\Windows\\System32\\cmd.exe /c ""C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe" configure --instance "Tentacle" --app "C:\\Applications" --console"',
+      :unless    => 'C:\\Windows\\System32\\cmd.exe /c "C:\\Windows\\System32\\findstr.exe "C:\\Applications" "C:\\Octopus\\Tentacle\\Tentacle.config""',
+      :logoutput => 'true',
+    }).that_requires('Exec[create-octopustentacle-home]') }
+
+    it { should contain_exec('create-octopustentacle-port').with({
+      :command   => 'C:\\Windows\\System32\\cmd.exe /c ""C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe" configure --instance "Tentacle" --port "10933" --console"',
+      :unless    => 'C:\\Windows\\System32\\cmd.exe /c "C:\\Windows\\System32\\findstr.exe "10933" "C:\\Octopus\\Tentacle\\Tentacle.config""',
+      :logoutput => 'true',
+    }).that_requires('Exec[create-octopustentacle-app]') }
+
+    it { should contain_exec('create-octopustentacle-communicationmode').with({
+      :command   => 'C:\\Windows\\System32\\cmd.exe /c ""C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe" configure --instance "Tentacle" --noListen "false" --console"',
+      :unless    => 'C:\\Windows\\System32\\cmd.exe /c "C:\\Windows\\System32\\findstr.exe "false" "C:\\Octopus\\Tentacle\\Tentacle.config""',
+      :logoutput => 'true',
+    }).that_requires('Exec[create-octopustentacle-port]') }
+
+    it { should contain_exec('create-octopustentacle-trust').with({
+      :command   => 'C:\\Windows\\System32\\cmd.exe /c ""C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe" configure --instance "Tentacle" --trust "CCCD736C25938806692F6C55521FA0869F29F280" --console"',
+      :unless    => 'C:\\Windows\\System32\\cmd.exe /c "C:\\Windows\\System32\\findstr.exe "CCCD736C25938806692F6C55521FA0869F29F280" "C:\\Octopus\\Tentacle\\Tentacle.config""',
+      :logoutput => 'true',
+    }).that_requires('Exec[create-octopustentacle-communicationmode]') }
+
+    it { should contain_exec('install-and-start-tentacle-service').with({
+      :command   => 'C:\\Windows\\System32\\cmd.exe /c ""C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe" service --instance "Tentacle" --install --start --console"',
+      # :unless    => 'C:\\Windows\\System32\\cmd.exe /c "C:\\Windows\\System32\\findstr.exe "CCCD736C25938806692F6C55521FA0869F29F280" "C:\\Octopus\\Tentacle\\Tentacle.config""',
+      :logoutput => 'true',
+    }).that_requires('Exec[create-octopustentacle-trust]') }
   end
 
 end
