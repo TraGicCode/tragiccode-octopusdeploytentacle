@@ -62,11 +62,16 @@ lAGQAIABDAHIAeQBwAHQAbwBnAHIAYQBwAGgAaQBjACAAUAByAG8AdgBpAGQAZQByACAAdgAxAC4AMDC
       :logoutput => 'true',
     }).that_requires('File[C:\\pre-generated-tentacle-certificate.txt]') }
 
-    it { should contain_exec('install-and-start-tentacle-service').with({
-      :command   => 'C:\\Windows\\System32\\cmd.exe /c ""C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe" service --instance "Tentacle" --install --start --console"',
-      # :unless    => 'C:\\Windows\\System32\\cmd.exe /c "C:\\Windows\\System32\\findstr.exe "CCCD736C25938806692F6C55521FA0869F29F280" "C:\\Octopus\\Tentacle\\Tentacle.config""',
+    it { should contain_exec('install-tentacle-service').with({
+      :command   => 'C:\\Windows\\System32\\cmd.exe /c ""C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe" service --instance "Tentacle" --install --console"',
+      :unless    => 'C:\\Windows\\System32\\cmd.exe /c reg query "HKLM\\SYSTEM\\CurrentControlSet\\Services\\OctopusDeploy Tentacle"',
       :logoutput => 'true',
     }).that_requires('Exec[import-octopustentacle-certificate]') }
+
+    it { should contain_service('OctopusDeploy Tentacle').with({
+      :ensure => 'running',
+      :enable => 'true',
+    }).that_requires('Exec[install-tentacle-service]') }
   end
 
 end
