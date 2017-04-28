@@ -3,6 +3,7 @@
 class octopusdeploytentacle::config(
   String $server_thumbprint,
   String $instance_pregenerated_certificate,
+  String $instance_pregenerated_certificate_thumbprint,
   String $instance_name                                = $octopusdeploytentacle::params::instance_name,
   Stdlib::Absolutepath $instance_home_directory        = $octopusdeploytentacle::params::instance_home_directory,
   Stdlib::Absolutepath $instance_application_directory = $octopusdeploytentacle::params::instance_application_directory,
@@ -57,7 +58,7 @@ class octopusdeploytentacle::config(
   }
   -> exec { 'import-octopustentacle-certificate':
     command   => "C:\\Windows\\System32\\cmd.exe /c \"\"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe\" import-certificate --instance \"${instance_name}\" -f C:\\pre-generated-tentacle-certificate.txt  --console\"",
-    # unless    => "C:\\Windows\\System32\\cmd.exe /c \"C:\\Windows\\System32\\findstr.exe \"${tentacle_app_directory}\" \"${tentacle_config_directory}\"\"",
+    unless    => "C:\\Windows\\System32\\cmd.exe /c \"C:\\Windows\\System32\\findstr.exe \"${instance_pregenerated_certificate_thumbprint}\" \"${tentacle_config_directory}\"\"",
     logoutput => true,
   }
   -> exec { 'install-and-start-tentacle-service':
