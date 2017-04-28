@@ -61,8 +61,12 @@ class octopusdeploytentacle::config(
     unless    => "C:\\Windows\\System32\\cmd.exe /c \"C:\\Windows\\System32\\findstr.exe \"${instance_pregenerated_certificate_thumbprint}\" \"${tentacle_config_directory}\"\"",
     logoutput => true,
   }
+  # 1060 = Service doesnt exist
+  # 0    = Service exist
+  # ./sc.exe query "OctopusDeploy Tentacle"
   -> exec { 'install-and-start-tentacle-service':
     command   => "C:\\Windows\\System32\\cmd.exe /c \"\"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe\" service --instance \"${instance_name}\" --install --start --console\"",
+    unless    => 'C:\\Windows\\System32\\cmd.exe /c reg query "HKLM\\SYSTEM\\CurrentControlSet\\Services\\OctopusDeploy Tentacle"',
     logoutput => true,
   }
 }
