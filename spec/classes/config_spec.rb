@@ -23,7 +23,7 @@ lAGQAIABDAHIAeQBwAHQAbwBnAHIAYQBwAGgAaQBjACAAUAByAG8AdgBpAGQAZQByACAAdgAxAC4AMDC
       :command   => 'C:\\Windows\\System32\\cmd.exe /c ""C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe" configure --instance "Tentacle" --home "C:\\Octopus" --console"',
       :unless    => 'C:\\Windows\\System32\\cmd.exe /c "C:\\Windows\\System32\\findstr.exe "C:\\Octopus" "C:\\Octopus\\Tentacle\\Tentacle.config""',
       :logoutput => 'true',
-    }) }
+    }).that_requires('Exec[create-octopustentacle-instance]') }
   end
 
 end
