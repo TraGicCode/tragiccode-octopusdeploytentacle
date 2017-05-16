@@ -71,6 +71,6 @@ class octopusdeploytentacle::config(
   }
   -> service { 'OctopusDeploy Tentacle':
     ensure => 'running',
-    enable => 'true',
+    enable => true,
   }
 }
