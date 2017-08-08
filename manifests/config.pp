@@ -4,11 +4,12 @@ class octopusdeploytentacle::config(
   String $server_thumbprint,
   String $instance_pregenerated_certificate,
   String $instance_pregenerated_certificate_thumbprint,
-  String $instance_name                                = $octopusdeploytentacle::params::instance_name,
-  Stdlib::Absolutepath $instance_home_directory        = $octopusdeploytentacle::params::instance_home_directory,
-  Stdlib::Absolutepath $instance_application_directory = $octopusdeploytentacle::params::instance_application_directory,
-  Enum['Listen', 'Poll']$communication_mode            = $octopusdeploytentacle::params::communication_mode,
-  Integer $instance_port                               = $octopusdeploytentacle::params::instance_port,
+  String $instance_name                                                 = $octopusdeploytentacle::params::instance_name,
+  Stdlib::Absolutepath $instance_home_directory                         = $octopusdeploytentacle::params::instance_home_directory,
+  Stdlib::Absolutepath $instance_application_directory                  = $octopusdeploytentacle::params::instance_application_directory,
+  Stdlib::Absolutepath $instance_pregenerated_certificate_absolute_path = $octopusdeploytentacle::params::instance_pregenerated_certificate_absolute_path,
+  Enum['Listen', 'Poll']$communication_mode                             = $octopusdeploytentacle::params::communication_mode,
+  Integer $instance_port                                                = $octopusdeploytentacle::params::instance_port,
   ) inherits octopusdeploytentacle::params {
   ## Note: i would like to do something like this but i couldn't get this to work in beaker :(
   # Single quotation marks won't do in that case. You have to add quotation marks around each path and also enclose the whole command in quotation marks:
@@ -19,7 +20,6 @@ class octopusdeploytentacle::config(
     'Listen' => false,
     'Poll'   => true,
   }
-  $tentacle_pre_generated_certificate_absolute_path = 'C:\\pre-generated-tentacle-certificate.txt'
 
   # With Find 1 means mastch not found and 0 means match found
   exec { 'create-octopustentacle-instance':

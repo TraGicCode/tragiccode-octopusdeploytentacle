@@ -46,11 +46,12 @@ class octopusdeploytentacle(
   String $server_thumbprint,
   String $instance_pregenerated_certificate,
   String $instance_pregenerated_certificate_thumbprint,
-  Enum['present', 'installed', 'absent'] $package_ensure = $octopusdeploytentacle::params::package_ensure,
-  Enum['Listen', 'Poll'] $communication_mode             = $octopusdeploytentacle::params::communication_mode,
-  Stdlib::Absolutepath $instance_home_directory          = $octopusdeploytentacle::params::instance_home_directory,
-  Stdlib::Absolutepath $instance_application_directory   = $octopusdeploytentacle::params::instance_application_directory,
-  Integer $instance_port                                 = $octopusdeploytentacle::params::instance_port,
+  Enum['present', 'installed', 'absent'] $package_ensure                = $octopusdeploytentacle::params::package_ensure,
+  Enum['Listen', 'Poll'] $communication_mode                            = $octopusdeploytentacle::params::communication_mode,
+  Stdlib::Absolutepath $instance_home_directory                         = $octopusdeploytentacle::params::instance_home_directory,
+  Stdlib::Absolutepath $instance_application_directory                  = $octopusdeploytentacle::params::instance_application_directory,
+  Stdlib::Absolutepath $instance_pregenerated_certificate_absolute_path = $octopusdeploytentacle::params::instance_pregenerated_certificate_absolute_path,
+  Integer $instance_port                                                = $octopusdeploytentacle::params::instance_port,
   ) inherits octopusdeploytentacle::params {
 
   class { 'octopusdeploytentacle::install':
@@ -58,13 +59,14 @@ class octopusdeploytentacle(
   }
 
   class { 'octopusdeploytentacle::config':
-    communication_mode                           => $communication_mode,
-    server_thumbprint                            => $server_thumbprint,
-    instance_home_directory                      => $instance_home_directory,
-    instance_application_directory               => $instance_application_directory,
-    instance_port                                => $instance_port,
-    instance_pregenerated_certificate            => $instance_pregenerated_certificate,
-    instance_pregenerated_certificate_thumbprint => $instance_pregenerated_certificate_thumbprint,
+    communication_mode                              => $communication_mode,
+    server_thumbprint                               => $server_thumbprint,
+    instance_home_directory                         => $instance_home_directory,
+    instance_application_directory                  => $instance_application_directory,
+    instance_port                                   => $instance_port,
+    instance_pregenerated_certificate               => $instance_pregenerated_certificate,
+    instance_pregenerated_certificate_thumbprint    => $instance_pregenerated_certificate_thumbprint,
+    instance_pregenerated_certificate_absolute_path => $instance_pregenerated_certificate_absolute_path,
   }
 
   Class['octopusdeploytentacle::install']
