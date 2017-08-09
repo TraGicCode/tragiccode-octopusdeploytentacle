@@ -1,5 +1,10 @@
 fixtures:
     repositories:
-      stdlib: 'https://github.com/puppetlabs/puppetlabs-stdlib.git'
+      powershell: 
+        repo: 'https://github.com/puppetlabs/puppetlabs-powershell.git'
+        ref:  '2.1.2'
+      stdlib: 
+        repo: 'https://github.com/puppetlabs/puppetlabs-stdlib.git'
+        ref:  '4.17.1'
     symlinks:
       octopusdeploytentacle: "#{source_dir}"

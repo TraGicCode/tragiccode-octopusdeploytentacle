@@ -30,3 +30,9 @@ task :test do
     Rake::Task[test].invoke
   end
 end
+
+desc 'Auto-correct puppet-lint offenses'
+task 'lint:auto_correct' do
+  PuppetLint.configuration.fix = true
+  Rake::Task['lint'].invoke
+end

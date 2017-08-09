@@ -7,6 +7,10 @@ lAGQAIABDAHIAeQBwAHQAbwBnAHIAYQBwAGgAaQBjACAAUAByAG8AdgBpAGQAZQByACAAdgAxAC4AMDC
     HEREDOC
 
     let(:params) {{
+      :server_url                                   => 'http://deploy.tragiccode.com',
+      :api_key                                      => 'API-SDLKJFQWEIURLSMCN8348SDKJF',
+      :environment                                  => 'development',
+      :role                                         => 'web-server',
       :server_thumbprint                            => 'CCCD736C25938806692F6C55521FA0869F29F280',
       :instance_pregenerated_certificate            => instance_pregenerated_certificate,
       :instance_pregenerated_certificate_thumbprint => instance_pregenerated_certificate_thumbprint,
@@ -72,6 +76,17 @@ lAGQAIABDAHIAeQBwAHQAbwBnAHIAYQBwAGgAaQBjACAAUAByAG8AdgBpAGQAZQByACAAdgAxAC4AMDC
       :ensure => 'running',
       :enable => 'true',
     }).that_requires('Exec[install-tentacle-service]') }
+
+    it { should contain_exec('register-octopustentacle-with-octopus-server').with({
+      :command   => 'C:\\Windows\\System32\\cmd.exe /c ""C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe" register-with --instance "Tentacle" --server "http://deploy.tragiccode.com" --apiKey "API-SDLKJFQWEIURLSMCN8348SDKJF" --environment "development" --role "web-server" --console"',
+      :unless    => '$ErrorActionPreference = "Stop"
+                  $result = Invoke-RestMethod -Method Get -Uri \'http://deploy.tragiccode.com/api/Machines/all?thumbprint=190FB29BA9A26E5A3565FCCE4B2191C15032709E\' -Headers @{"X-Octopus-ApiKey"="API-SDLKJFQWEIURLSMCN8348SDKJF"}
+                   if ($result.Count -eq 1) {
+                      Exit 0
+                    }
+                   Exit 1',
+      :logoutput => 'true',
+    }).that_requires('Service[OctopusDeploy Tentacle]') }
   end
 
 end

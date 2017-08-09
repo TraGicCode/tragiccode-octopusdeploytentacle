@@ -46,6 +46,10 @@ class octopusdeploytentacle(
   String $server_thumbprint,
   String $instance_pregenerated_certificate,
   String $instance_pregenerated_certificate_thumbprint,
+  Stdlib::Httpurl $server_url,
+  Pattern[/^API-[a-zA-Z0-9]+$/] $api_key,
+  String $environment,
+  String $role,
   Enum['present', 'installed', 'absent'] $package_ensure                = $octopusdeploytentacle::params::package_ensure,
   Enum['Listen', 'Poll'] $communication_mode                            = $octopusdeploytentacle::params::communication_mode,
   Stdlib::Absolutepath $instance_home_directory                         = $octopusdeploytentacle::params::instance_home_directory,
@@ -67,6 +71,10 @@ class octopusdeploytentacle(
     instance_pregenerated_certificate               => $instance_pregenerated_certificate,
     instance_pregenerated_certificate_thumbprint    => $instance_pregenerated_certificate_thumbprint,
     instance_pregenerated_certificate_absolute_path => $instance_pregenerated_certificate_absolute_path,
+    server_url                                      => $server_url,
+    api_key                                         => $api_key,
+    environment                                     => $environment,
+    role                                            => $role,
   }
 
   Class['octopusdeploytentacle::install']
