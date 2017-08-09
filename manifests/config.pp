@@ -4,7 +4,7 @@ class octopusdeploytentacle::config(
   Stdlib::Httpurl $server_url,
   Pattern[/^API-[a-zA-Z0-9]+$/] $api_key,
   String $environment,
-  String $role,
+  Array[String] $roles,
   String $server_thumbprint,
   String $instance_pregenerated_certificate,
   String $instance_pregenerated_certificate_thumbprint,
@@ -77,9 +77,10 @@ class octopusdeploytentacle::config(
     ensure => 'running',
     enable => true,
   }
+  $command_line_roles = join($roles, ' --role ')
   # TODO: This is a hack it doesn't actually see if anything changed it just checks if the machine is already in octopus!
-  -> exec { 'register-octopustentacle-with-octopus-server':
-    command   => "C:\\Windows\\System32\\cmd.exe /c \"\"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe\" register-with --instance \"${instance_name}\" --server \"${server_url}\" --apiKey \"${api_key}\" --environment \"${environment}\" --role \"${role}\" --console\"",
+  exec { 'register-octopustentacle-with-octopus-server':
+    command   => "C:\\Windows\\System32\\cmd.exe /c \"\"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe\" register-with --instance \"${instance_name}\" --server \"${server_url}\" --apiKey \"${api_key}\" --environment \"${environment}\" --role ${command_line_roles} --console\"",
     unless    => "\$ErrorActionPreference = \"Stop\"
                   \$result = Invoke-RestMethod -Method Get -Uri '${server_url}/api/Machines/all?thumbprint=${instance_pregenerated_certificate_thumbprint}' -Headers @{\"X-Octopus-ApiKey\"=\"${api_key}\"}
                    if (\$result.Count -eq 1) {
@@ -88,5 +89,6 @@ class octopusdeploytentacle::config(
                    Exit 1",
     logoutput => true,
     provider  => 'powershell',
+    require   => Service['OctopusDeploy Tentacle'],
   }
 }

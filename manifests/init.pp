@@ -49,7 +49,7 @@ class octopusdeploytentacle(
   Stdlib::Httpurl $server_url,
   Pattern[/^API-[a-zA-Z0-9]+$/] $api_key,
   String $environment,
-  String $role,
+  Array[String] $roles,
   Enum['present', 'installed', 'absent'] $package_ensure                = $octopusdeploytentacle::params::package_ensure,
   Enum['Listen', 'Poll'] $communication_mode                            = $octopusdeploytentacle::params::communication_mode,
   Stdlib::Absolutepath $instance_home_directory                         = $octopusdeploytentacle::params::instance_home_directory,
@@ -74,7 +74,7 @@ class octopusdeploytentacle(
     server_url                                      => $server_url,
     api_key                                         => $api_key,
     environment                                     => $environment,
-    role                                            => $role,
+    roles                                           => $roles,
   }
 
   Class['octopusdeploytentacle::install']
