@@ -80,13 +80,29 @@ class octopusdeploytentacle::config(
   }
   $command_line_roles = join($roles, ' --role ')
   # TODO: This is a hack it doesn't actually see if anything changed it just checks if the machine is already in octopus!
+  # Ideally this should be used for thumbprint..i think
+  # exec { 'register-octopustentacle-with-octopus-server':
+  #   command   => "if (!(Test-Path -Path \$env:TMP)) {
+  #                     New-Item -Path \$env:TMP -ItemType Directory
+  #                 }
+  #                 & \"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe\" register-with --instance \"${instance_name}\" --server \"${server_url}\" --apiKey \"${api_key}\" --publicHostName \"${public_host_name}\" --environment \"${environment}\" --role ${command_line_roles} --console",
+  #   unless    => "\$ErrorActionPreference = \"Stop\"
+  #                 \$result = Invoke-RestMethod -Method Get -Uri '${server_url}/api/Machines/all?thumbprint=${instance_pregenerated_certificate_thumbprint}' -Headers @{\"X-Octopus-ApiKey\"=\"${api_key}\"}
+  #                  if (\$result.Count -eq 1) {
+  #                     Exit 0
+  #                   }
+  #                  Exit 1",
+  #   logoutput => true,
+  #   provider  => 'powershell',
+  #   require   => Service['OctopusDeploy Tentacle'],
+  # }
   exec { 'register-octopustentacle-with-octopus-server':
     command   => "if (!(Test-Path -Path \$env:TMP)) {
                       New-Item -Path \$env:TMP -ItemType Directory
                   }
                   & \"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe\" register-with --instance \"${instance_name}\" --server \"${server_url}\" --apiKey \"${api_key}\" --publicHostName \"${public_host_name}\" --environment \"${environment}\" --role ${command_line_roles} --console",
     unless    => "\$ErrorActionPreference = \"Stop\"
-                  \$result = Invoke-RestMethod -Method Get -Uri '${server_url}/api/Machines/all?thumbprint=${instance_pregenerated_certificate_thumbprint}' -Headers @{\"X-Octopus-ApiKey\"=\"${api_key}\"}
+                  \$result = Invoke-RestMethod -Method Get -Uri '${server_url}/api/Machines/all' -Headers @{\"X-Octopus-ApiKey\"=\"${api_key}\"} | Where-Object { $PSItem.Name -eq \"${facts['hostname']}\" }
                    if (\$result.Count -eq 1) {
                       Exit 0
                     }
