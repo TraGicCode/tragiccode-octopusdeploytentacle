@@ -80,7 +80,10 @@ class octopusdeploytentacle::config(
   $command_line_roles = join($roles, ' --role ')
   # TODO: This is a hack it doesn't actually see if anything changed it just checks if the machine is already in octopus!
   exec { 'register-octopustentacle-with-octopus-server':
-    command   => "& \"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe\" register-with --instance \"${instance_name}\" --server \"${server_url}\" --apiKey \"${api_key}\" --environment \"${environment}\" --role ${command_line_roles} --console",
+    command   => "if (!(Test-Path -Path \$env:TMP)) {
+                      New-Item -Path \$env:TMP -ItemType Directory
+                  }
+                  & \"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe\" register-with --instance \"${instance_name}\" --server \"${server_url}\" --apiKey \"${api_key}\" --environment \"${environment}\" --role ${command_line_roles} --console",
     unless    => "\$ErrorActionPreference = \"Stop\"
                   \$result = Invoke-RestMethod -Method Get -Uri '${server_url}/api/Machines/all?thumbprint=${instance_pregenerated_certificate_thumbprint}' -Headers @{\"X-Octopus-ApiKey\"=\"${api_key}\"}
                    if (\$result.Count -eq 1) {
