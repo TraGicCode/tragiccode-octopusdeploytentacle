@@ -5,6 +5,7 @@ class octopusdeploytentacle::config(
   Pattern[/^API-[a-zA-Z0-9]+$/] $api_key,
   String $environment,
   Array[String] $roles,
+  String $public_host_name,
   String $server_thumbprint,
   String $instance_pregenerated_certificate,
   String $instance_pregenerated_certificate_thumbprint,
@@ -83,7 +84,7 @@ class octopusdeploytentacle::config(
     command   => "if (!(Test-Path -Path \$env:TMP)) {
                       New-Item -Path \$env:TMP -ItemType Directory
                   }
-                  & \"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe\" register-with --instance \"${instance_name}\" --server \"${server_url}\" --apiKey \"${api_key}\" --environment \"${environment}\" --role ${command_line_roles} --console",
+                  & \"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe\" register-with --instance \"${instance_name}\" --server \"${server_url}\" --apiKey \"${api_key}\" --publicHostName \"${public_host_name}\" --environment \"${environment}\" --role ${command_line_roles} --console",
     unless    => "\$ErrorActionPreference = \"Stop\"
                   \$result = Invoke-RestMethod -Method Get -Uri '${server_url}/api/Machines/all?thumbprint=${instance_pregenerated_certificate_thumbprint}' -Headers @{\"X-Octopus-ApiKey\"=\"${api_key}\"}
                    if (\$result.Count -eq 1) {

@@ -10,6 +10,7 @@ MIIJhgIBAzCCCUYGCSqGSIb3DQEHAaCCCTcEggkzMIIJLzCCBggGCSqGSIb3DQEHAaCCBfkEggX1MIIF
       :api_key                                      => 'API-SDLKJFQWEIURLSMCN8348SDKJF',
       :environment                                  => 'development',
       :roles                                        => ['web-server'],
+      :public_host_name                             => 'webserver.tragiccode.com',
       :server_thumbprint                            => 'CCCD736C25938806692F6C55521FA0869F29F280',
       :instance_pregenerated_certificate            => instance_pregenerated_certificate,
       :instance_pregenerated_certificate_thumbprint => instance_pregenerated_certificate_thumbprint,
