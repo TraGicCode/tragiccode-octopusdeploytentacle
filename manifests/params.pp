@@ -10,4 +10,5 @@ class octopusdeploytentacle::params {
   $instance_home_directory                         = 'C:\\Octopus'
   $instance_application_directory                  = 'C:\\Applications'
   $instance_port                                   = 10933
+  $manage_service                                  = true
 }

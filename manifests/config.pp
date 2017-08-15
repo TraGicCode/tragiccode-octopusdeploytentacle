@@ -15,6 +15,7 @@ class octopusdeploytentacle::config(
   Stdlib::Absolutepath $instance_pregenerated_certificate_absolute_path = $octopusdeploytentacle::params::instance_pregenerated_certificate_absolute_path,
   Enum['Listen', 'Poll']$communication_mode                             = $octopusdeploytentacle::params::communication_mode,
   Integer $instance_port                                                = $octopusdeploytentacle::params::instance_port,
+  Boolean $manage_service                                               = $octopusdeploytentacle::params::manage_service,
   ) inherits octopusdeploytentacle::params {
   ## Note: i would like to do something like this but i couldn't get this to work in beaker :(
   # Single quotation marks won't do in that case. You have to add quotation marks around each path and also enclose the whole command in quotation marks:
@@ -74,13 +75,6 @@ class octopusdeploytentacle::config(
     unless    => 'C:\\Windows\\System32\\cmd.exe /c reg query "HKLM\\SYSTEM\\CurrentControlSet\\Services\\OctopusDeploy Tentacle"',
     logoutput => true,
   }
-  -> dsc_service { 'OctopusDeploy Tentacle':
-    dsc_name           => 'OctopusDeploy Tentacle',
-    dsc_state          => 'Running',
-    dsc_startuptype    => 'Automatic',
-    dsc_ensure         => 'present',
-    dsc_builtinaccount => 'LocalSystem',
-  }
   $command_line_roles = join($roles, ' --role ')
   # TODO: This is a hack it doesn't actually see if anything changed it just checks if the machine is already in octopus!
   # Ideally this should be used for thumbprint..i think
@@ -97,7 +91,6 @@ class octopusdeploytentacle::config(
   #                  Exit 1",
   #   logoutput => true,
   #   provider  => 'powershell',
-  #   require   => Dsc_service['OctopusDeploy Tentacle'],
   # }
   $host_name = $facts['hostname']
   exec { 'register-octopustentacle-with-octopus-server':
@@ -113,6 +106,5 @@ class octopusdeploytentacle::config(
                    Exit 0",
     logoutput => true,
     provider  => 'powershell',
-    require   => Dsc_service['OctopusDeploy Tentacle'],
   }
 }

@@ -73,11 +73,6 @@ lAGQAIABDAHIAeQBwAHQAbwBnAHIAYQBwAGgAaQBjACAAUAByAG8AdgBpAGQAZQByACAAdgAxAC4AMDC
       :logoutput => 'true',
     }).that_requires('Exec[import-octopustentacle-certificate]') }
 
-    it { should contain_service('OctopusDeploy Tentacle').with({
-      :ensure => 'running',
-      :enable => 'true',
-    }).that_requires('Exec[install-tentacle-service]') }
-
     it { should contain_exec('register-octopustentacle-with-octopus-server').with({
       :command   => 'C:\\Windows\\System32\\cmd.exe /c ""C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe" register-with --instance "Tentacle" --server "http://deploy.tragiccode.com" --apiKey "API-SDLKJFQWEIURLSMCN8348SDKJF" --environment "development" --role web-server --console"',
       :unless    => '$ErrorActionPreference = "Stop"
@@ -87,7 +82,7 @@ lAGQAIABDAHIAeQBwAHQAbwBnAHIAYQBwAGgAaQBjACAAUAByAG8AdgBpAGQAZQByACAAdgAxAC4AMDC
                     }
                    Exit 1',
       :logoutput => 'true',
-    }).that_requires('Service[OctopusDeploy Tentacle]') }
+    }) }
   end
   describe 'octopusdeploytentacle::config' do
   context 'with roles => [web-server, database-server]' do

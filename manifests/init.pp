@@ -57,6 +57,7 @@ class octopusdeploytentacle(
   Stdlib::Absolutepath $instance_application_directory                  = $octopusdeploytentacle::params::instance_application_directory,
   Stdlib::Absolutepath $instance_pregenerated_certificate_absolute_path = $octopusdeploytentacle::params::instance_pregenerated_certificate_absolute_path,
   Integer $instance_port                                                = $octopusdeploytentacle::params::instance_port,
+  Boolean $manage_service                                               = $octopusdeploytentacle::params::manage_service,
   ) inherits octopusdeploytentacle::params {
 
   class { 'octopusdeploytentacle::install':
@@ -77,6 +78,12 @@ class octopusdeploytentacle(
     environment                                     => $environment,
     roles                                           => $roles,
     public_host_name                                => $public_host_name,
+  }
+  if ($manage_service) {
+      class { 'octopusdeploytentacle::service':
+    }
+    Class['octopusdeploytentacle::config']
+    -> Class['octopusdeploytentacle::service']
   }
 
   Class['octopusdeploytentacle::install']
