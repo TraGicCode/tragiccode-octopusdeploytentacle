@@ -1,5 +1,8 @@
 fixtures:
     repositories:
+      dsc: 
+        repo: 'https://github.com/puppetlabs/puppetlabs-dsc.git'
+        ref:  '1.3.0'
       powershell: 
         repo: 'https://github.com/puppetlabs/puppetlabs-powershell.git'
         ref:  '2.1.2'

@@ -74,9 +74,12 @@ class octopusdeploytentacle::config(
     unless    => 'C:\\Windows\\System32\\cmd.exe /c reg query "HKLM\\SYSTEM\\CurrentControlSet\\Services\\OctopusDeploy Tentacle"',
     logoutput => true,
   }
-  -> service { 'OctopusDeploy Tentacle':
-    ensure => 'running',
-    enable => true,
+  -> dsc_service { 'OctopusDeploy Tentacle':
+    dsc_name           => 'OctopusDeploy Tentacle',
+    dsc_state          => 'Running',
+    dsc_startuptype    => 'Automatic',
+    dsc_ensure         => 'present',
+    dsc_builtinaccount => 'LocalSystem',
   }
   $command_line_roles = join($roles, ' --role ')
   # TODO: This is a hack it doesn't actually see if anything changed it just checks if the machine is already in octopus!
@@ -94,7 +97,7 @@ class octopusdeploytentacle::config(
   #                  Exit 1",
   #   logoutput => true,
   #   provider  => 'powershell',
-  #   require   => Service['OctopusDeploy Tentacle'],
+  #   require   => Dsc_service['OctopusDeploy Tentacle'],
   # }
   $host_name = $facts['hostname']
   exec { 'register-octopustentacle-with-octopus-server':
@@ -110,6 +113,6 @@ class octopusdeploytentacle::config(
                    Exit 0",
     logoutput => true,
     provider  => 'powershell',
-    require   => Service['OctopusDeploy Tentacle'],
+    require   => Dsc_service['OctopusDeploy Tentacle'],
   }
 }

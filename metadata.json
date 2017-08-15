@@ -9,7 +9,8 @@
   "issues_url": "https://github.com/TraGicCode/tragiccode-octopusdeploytentacle/issues",
   "dependencies": [
     {"name":"puppetlabs-stdlib","version_requirement":"4.x"},
-    {"name":"puppetlabs-powershell","version_requirement":"2.x"}
+    {"name":"puppetlabs-powershell","version_requirement":"2.x"},
+    {"name":"puppetlabs-dsc","version_requirement":"1.x"}
   ],
   "data_provider": null
 }
