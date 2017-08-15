@@ -51,13 +51,16 @@ class octopusdeploytentacle(
   String $environment,
   Array[String] $roles,
   String $public_host_name,
-  Enum['present', 'installed', 'absent'] $package_ensure                = $octopusdeploytentacle::params::package_ensure,
-  Enum['Listen', 'Poll'] $communication_mode                            = $octopusdeploytentacle::params::communication_mode,
-  Stdlib::Absolutepath $instance_home_directory                         = $octopusdeploytentacle::params::instance_home_directory,
-  Stdlib::Absolutepath $instance_application_directory                  = $octopusdeploytentacle::params::instance_application_directory,
-  Stdlib::Absolutepath $instance_pregenerated_certificate_absolute_path = $octopusdeploytentacle::params::instance_pregenerated_certificate_absolute_path,
-  Integer $instance_port                                                = $octopusdeploytentacle::params::instance_port,
-  Boolean $manage_service                                               = $octopusdeploytentacle::params::manage_service,
+  Enum['present', 'installed', 'absent'] $package_ensure                 = $octopusdeploytentacle::params::package_ensure,
+  Enum['Listen', 'Poll'] $communication_mode                             = $octopusdeploytentacle::params::communication_mode,
+  Stdlib::Absolutepath $instance_home_directory                          = $octopusdeploytentacle::params::instance_home_directory,
+  Stdlib::Absolutepath $instance_application_directory                   = $octopusdeploytentacle::params::instance_application_directory,
+  Stdlib::Absolutepath $instance_pregenerated_certificate_absolute_path  = $octopusdeploytentacle::params::instance_pregenerated_certificate_absolute_path,
+  Integer $instance_port                                                 = $octopusdeploytentacle::params::instance_port,
+  Boolean $manage_service                                                = $octopusdeploytentacle::params::manage_service,
+  Optional[Enum['absent', 'present']] $service_ensure                    = $octopusdeploytentacle::params::service_ensure,
+  Optional[Enum['automatic', 'disabled', 'manual']] $service_state       = $octopusdeploytentacle::params::service_state,
+  Optional[Enum['running', 'stopped']] $service_startuptype              = $octopusdeploytentacle::params::service_startuptype,
   ) inherits octopusdeploytentacle::params {
 
   class { 'octopusdeploytentacle::install':
@@ -81,6 +84,9 @@ class octopusdeploytentacle(
   }
   if ($manage_service) {
       class { 'octopusdeploytentacle::service':
+        service_ensure      => $service_ensure,
+        service_state       => $service_state,
+        service_startuptype => $service_startuptype,
     }
     Class['octopusdeploytentacle::config']
     -> Class['octopusdeploytentacle::service']

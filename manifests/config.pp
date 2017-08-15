@@ -15,7 +15,6 @@ class octopusdeploytentacle::config(
   Stdlib::Absolutepath $instance_pregenerated_certificate_absolute_path = $octopusdeploytentacle::params::instance_pregenerated_certificate_absolute_path,
   Enum['Listen', 'Poll']$communication_mode                             = $octopusdeploytentacle::params::communication_mode,
   Integer $instance_port                                                = $octopusdeploytentacle::params::instance_port,
-  Boolean $manage_service                                               = $octopusdeploytentacle::params::manage_service,
   ) inherits octopusdeploytentacle::params {
   ## Note: i would like to do something like this but i couldn't get this to work in beaker :(
   # Single quotation marks won't do in that case. You have to add quotation marks around each path and also enclose the whole command in quotation marks:

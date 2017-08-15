@@ -11,4 +11,10 @@ class octopusdeploytentacle::params {
   $instance_application_directory                  = 'C:\\Applications'
   $instance_port                                   = 10933
   $manage_service                                  = true
+  $service_ensure                                  = 'present'
+  $service_state                                   = 'automatic'
+  $service_startuptype                             = 'running'
+  # BuiltInAccount
+  # Credential 
+  # https://docs.microsoft.com/en-us/powershell/dsc/serviceresource
 }
