@@ -14,7 +14,7 @@ class octopusdeploytentacle::params {
   $service_ensure                                  = 'present'
   $service_state                                   = 'automatic'
   $service_startuptype                             = 'running'
-  # BuiltInAccount
-  # Credential 
-  # https://docs.microsoft.com/en-us/powershell/dsc/serviceresource
+  $service_built_in_account                        = undef
+  $service_username                                = undef
+  $service_password                                = undef
 }
