@@ -3,8 +3,8 @@
 #
 class octopusdeploytentacle::service(
   Enum['absent', 'present'] $service_ensure                                                 = $octopusdeploytentacle::params::service_ensure,
-  Enum['automatic', 'disabled', 'manual'] $service_state                                    = $octopusdeploytentacle::params::service_state,
-  Enum['running', 'stopped'] $service_startuptype                                           = $octopusdeploytentacle::params::service_startuptype,
+  Enum['running', 'stopped'] $service_state                                                 = $octopusdeploytentacle::params::service_state,
+  Enum['automatic', 'disabled', 'manual'] $service_startuptype                              = $octopusdeploytentacle::params::service_startuptype,
   Optional[Enum['localservice', 'localsystem', 'networkservice']] $service_built_in_account = $octopusdeploytentacle::params::service_built_in_account,
   Optional[String] $service_username                                                        = $octopusdeploytentacle::params::service_username,
   Optional[String] $service_password                                                        = $octopusdeploytentacle::params::service_password,
