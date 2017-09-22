@@ -1,11 +1,11 @@
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-lint/tasks/puppet-lint'
 require 'metadata-json-lint/rake_task'
+require 'puppet-strings/tasks'
+require "guard/rake_task"
 
-if RUBY_VERSION >= '1.9'
-  require 'rubocop/rake_task'
-  RuboCop::RakeTask.new
-end
+
+Guard::RakeTask.new(:guard)
 
 PuppetLint.configuration.send('disable_80chars')
 PuppetLint.configuration.relative = true
@@ -29,10 +29,4 @@ task :test do
   [:metadata_lint, :lint, :validate, :spec].each do |test|
     Rake::Task[test].invoke
   end
-end
-
-desc 'Auto-correct puppet-lint offenses'
-task 'lint:auto_correct' do
-  PuppetLint.configuration.fix = true
-  Rake::Task['lint'].invoke
 end
