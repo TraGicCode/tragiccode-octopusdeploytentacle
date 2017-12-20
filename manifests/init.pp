@@ -98,9 +98,15 @@ class octopusdeploytentacle(
         service_username         => $service_username,
         service_password         => $service_password,
     }
+
+    contain octopusdeploytentacle::service
+
     Class['octopusdeploytentacle::config']
     -> Class['octopusdeploytentacle::service']
   }
+
+  contain octopusdeploytentacle::install
+  contain octopusdeploytentacle::config
 
   Class['octopusdeploytentacle::install']
   -> Class['octopusdeploytentacle::config']
