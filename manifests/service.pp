@@ -15,7 +15,7 @@ class octopusdeploytentacle::service(
   undef   => {
     dsc_credential    => {
       'user'     => $service_username,
-      'password' => $service_password,
+      'password' => Sensitive($service_password),
     }
   },
   default => {
