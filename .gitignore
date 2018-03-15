@@ -1,5 +1,6 @@
 .bundle/
 .vagrant/
+.vscode/
 log/
 spec/fixtures/
 .yardoc/
