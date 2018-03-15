@@ -51,6 +51,7 @@ class octopusdeploytentacle(
   String $environment,
   Array[String] $roles,
   String $public_host_name,
+  String $display_name                                                                      = $octopusdeploytentacle::params::display_name,
   Enum['present', 'installed', 'absent'] $package_ensure                                    = $octopusdeploytentacle::params::package_ensure,
   Enum['Listen', 'Poll'] $communication_mode                                                = $octopusdeploytentacle::params::communication_mode,
   Stdlib::Absolutepath $instance_home_directory                                             = $octopusdeploytentacle::params::instance_home_directory,
@@ -88,6 +89,7 @@ class octopusdeploytentacle(
     environment                                     => $environment,
     roles                                           => $roles,
     public_host_name                                => $public_host_name,
+    display_name                                    => $display_name,
   }
   if ($manage_service) {
       class { 'octopusdeploytentacle::service':

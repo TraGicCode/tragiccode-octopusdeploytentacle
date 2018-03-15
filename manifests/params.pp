@@ -5,6 +5,7 @@ class octopusdeploytentacle::params {
   $tentacle_download_absolute_path                 = 'C:\\OctopusTentacle64.msi'
   $instance_pregenerated_certificate_absolute_path = 'C:\\pre-generated-tentacle-certificate.txt'
   $package_ensure                                  = 'present'
+  $display_name                                    = $facts['hostname']
   $communication_mode                              = 'Listen'
   $instance_name                                   = 'Tentacle'
   $instance_home_directory                         = 'C:\\Octopus'
