@@ -97,7 +97,7 @@ class octopusdeploytentacle::config(
     command   => "if (!(Test-Path -Path \$env:TMP)) {
                       New-Item -Path \$env:TMP -ItemType Directory
                   }
-                  & \"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe\" register-with --instance \"${instance_name}\" --server \"${server_url}\" --name \"${display_name}\" --apiKey \"${api_key}\" --publicHostName \"${public_host_name}\" --environment \"${environment}\" --role ${command_line_roles} --console",
+                  & \"C:\\Program Files\\Octopus Deploy\\Tentacle\\tentacle.exe\" register-with --instance \"${instance_name}\" --server \"${server_url}\" --name \"${display_name}\" --apiKey \"${api_key}\" --publicHostName \"${public_host_name}\" --environment \"${environment}\" --role ${command_line_roles} --console --force",
     unless    => "\$ErrorActionPreference = \"Stop\"
                   \$result = (Invoke-RestMethod -Method Get -Uri '${server_url}/api/Machines/all' -Headers @{\"X-Octopus-ApiKey\"=\"${api_key}\"}) | Where-Object { \$PSItem.Name -eq \"${host_name}\" }
                    if (\$result -eq \$null) {
